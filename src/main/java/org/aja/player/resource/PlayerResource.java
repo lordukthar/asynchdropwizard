@@ -1,7 +1,7 @@
-package org.aja.people.resource;
+package org.aja.player.resource;
 
 import com.codahale.metrics.annotation.Timed;
-import org.aja.people.api.Player;
+import org.aja.player.api.Player;
 import org.eclipse.jetty.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

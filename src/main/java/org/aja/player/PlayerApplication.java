@@ -1,4 +1,4 @@
-package org.aja.people;
+package org.aja.player;
 
 import com.codahale.metrics.health.HealthCheck;
 import io.dropwizard.Application;
@@ -6,7 +6,7 @@ import io.dropwizard.jdbi.DBIFactory;
 import io.dropwizard.jdbi.OptionalContainerFactory;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import org.aja.people.resource.PlayerResource;
+import org.aja.player.resource.PlayerResource;
 import org.skife.jdbi.v2.DBI;
 
 public class PlayerApplication extends Application<PlayerConfiguration> {

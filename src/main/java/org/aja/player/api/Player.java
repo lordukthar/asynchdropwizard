@@ -1,4 +1,4 @@
-package org.aja.people.api;
+package org.aja.player.api;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;

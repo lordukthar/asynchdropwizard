@@ -1,4 +1,4 @@
-package org.aja.people;
+package org.aja.player;
 
 
 import io.dropwizard.Configuration;
