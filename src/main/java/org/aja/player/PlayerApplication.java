@@ -2,8 +2,10 @@ package org.aja.player;
 
 import com.codahale.metrics.health.HealthCheck;
 import io.dropwizard.Application;
+import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.jdbi.DBIFactory;
 import io.dropwizard.jdbi.OptionalContainerFactory;
+import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.aja.player.resource.PlayerResource;
@@ -21,7 +23,13 @@ public class PlayerApplication extends Application<PlayerConfiguration> {
 
     @Override
     public void initialize(Bootstrap<PlayerConfiguration> bootstrap) {
-        // nothing to do yet
+        // nothing to do PlayerConfiguration
+        bootstrap.addBundle(new MigrationsBundle<PlayerConfiguration>() {
+            @Override
+            public DataSourceFactory getDataSourceFactory(PlayerConfiguration config) {
+                return config.database;
+            }
+        });
     }
 
     @Override

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.1"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.1
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.1.xsd">
+    <changeSet author="jasp" id="1">
+        <createTable tableName="PEOPLE">
+
+            <column name="PEOPLE_ID" type="number">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="NAME" type="varchar(56)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="GENDER" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="AGE" type="number">
+                <constraints nullable="false"/>
+            </column>
+            </createTable>
+    </changeSet>
+
+</databaseChangeLog>
+
+
+
+
+
