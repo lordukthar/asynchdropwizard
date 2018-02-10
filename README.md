@@ -13,3 +13,14 @@ inject values into config depending on environment
 
 add GUI
 
+
+START
+
+Migrate
+
+db migrate config/config.yml
+
+Run server with program parameters
+
+server config/config.yml
+
