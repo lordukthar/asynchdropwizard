@@ -8,8 +8,10 @@ import io.dropwizard.jdbi.OptionalContainerFactory;
 import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import org.aja.player.db.PlayerDAO;
 import org.aja.player.resource.PlayerResource;
 import org.skife.jdbi.v2.DBI;
+import javax.xml.bind.JAXBException;
 
 public class PlayerApplication extends Application<PlayerConfiguration> {
     public static void main(String[] args) throws Exception {
@@ -17,13 +19,7 @@ public class PlayerApplication extends Application<PlayerConfiguration> {
     }
 
     @Override
-    public String getName() {
-        return "hello-world";
-    }
-
-    @Override
     public void initialize(Bootstrap<PlayerConfiguration> bootstrap) {
-        // nothing to do PlayerConfiguration
         bootstrap.addBundle(new MigrationsBundle<PlayerConfiguration>() {
             @Override
             public DataSourceFactory getDataSourceFactory(PlayerConfiguration config) {
@@ -39,6 +35,7 @@ public class PlayerApplication extends Application<PlayerConfiguration> {
         DBIFactory factory = new DBIFactory();
         DBI jdbi = factory.build(environment, configuration.database, "database");
         jdbi.registerContainerFactory(new OptionalContainerFactory());
+        PlayerDAO playerDAO = jdbi.onDemand(PlayerDAO.class);
 
 
 
@@ -50,7 +47,7 @@ public class PlayerApplication extends Application<PlayerConfiguration> {
             }
         });
 
-        final PlayerResource resource = new PlayerResource();
+        final PlayerResource resource = new PlayerResource(playerDAO);
         environment.jersey().register(resource);
     }
 

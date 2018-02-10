@@ -4,22 +4,28 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.1
     http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.1.xsd">
-    <changeSet author="jasp" id="1">
-        <createTable tableName="PEOPLE">
+    <changeSet author="jasp" id="1- createTable">
+        <createTable tableName="PLAYER">
 
-            <column name="PEOPLE_ID" type="number">
+            <column name="PLAYER_ID" type="number">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="NAME" type="varchar(56)">
+            <column name="PLAYER_NAME" type="varchar(56)">
                 <constraints nullable="false"/>
             </column>
-            <column name="GENDER" type="boolean">
+            <column name="PLAYER_GENDER_MALE" type="boolean">
                 <constraints nullable="false"/>
             </column>
-            <column name="AGE" type="number">
+            <column name="PLAYER_AGE" type="number">
                 <constraints nullable="false"/>
             </column>
             </createTable>
+    </changeSet>
+
+    <changeSet author="jasp" id="2-createSequence">
+        <createSequence incrementBy="1"
+                        sequenceName="player_id_sequence"
+                        startValue="1"/>
     </changeSet>
 
 </databaseChangeLog>
