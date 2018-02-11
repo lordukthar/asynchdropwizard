@@ -3,13 +3,17 @@ managed asynch rxjava and dropwizard
 
 Create a shell with dummy service returning JSON and delay 5 seconds and log, done
 
-Add liquebase
+Add liquebase done
 
-Add proper test with Mockito
+Add proper test with Mockito not done
 
-protect post/put/delete resource with basic auth and filter handling
+protect post/put/delete resource with basic auth and filter handling done
 
-inject values into config depending on environment
+Add header 
+
+uid:chief-wizard/password:secret and add that Auth header when doing post/put/delete
+
+inject values into config depending on environment done
 
 add GUI
 

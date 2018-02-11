@@ -4,12 +4,14 @@ import com.codahale.metrics.annotation.Timed;
 import org.aja.player.api.Player;
 import org.aja.player.api.PlayerRequest;
 import org.aja.player.common.Transformer;
+import org.aja.player.auth.User;
 import org.aja.player.db.PlayerDAO;
 import org.aja.player.db.PlayerEntity;
 import org.eclipse.jetty.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.container.AsyncResponse;
@@ -18,6 +20,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Arrays;
 import java.util.List;
+import io.dropwizard.auth.Auth;
 
 @Path("/v1/")
 @Produces(MediaType.APPLICATION_JSON)
@@ -32,6 +35,7 @@ public class PlayerResource {
 
     @PUT
     @Path("player/{id}")
+    @RolesAllowed("ADMIN")
     @Timed
     public void update(@Suspended final AsyncResponse asyncResponse, @PathParam("id") Integer id, @NotNull Player people) {
         asyncResponse.resume(Response.status(HttpStatus.OK_200).entity(people).build());
@@ -39,8 +43,10 @@ public class PlayerResource {
 
     @POST
     @Path("player")
+    @RolesAllowed("ADMIN")
     @Timed
-    public void add(@Suspended final AsyncResponse asyncResponse, @NotNull PlayerRequest request) {
+    public void add(@Suspended final AsyncResponse asyncResponse, @Auth User user,
+    @NotNull PlayerRequest request) {
         Integer playerId = playerDAO.getNextPlayerId();
         PlayerEntity entity = Transformer.convertPlayerRequest(playerId, request);
         playerDAO.insert(entity);
@@ -62,6 +68,7 @@ public class PlayerResource {
 
     @DELETE
     @Path("player/{id}")
+    @RolesAllowed("ADMIN")
     @Timed
     public void delete(@Suspended final AsyncResponse asyncResponse, @PathParam("id") Integer id) {
         asyncResponse.resume(Response.status(HttpStatus.OK_200).build());
