@@ -28,3 +28,22 @@ Run server with program parameters
 
 server config/config.yml
 
+
+GET
+http://localhost:8080/team-service/v1/player/1
+
+Returns
+{
+    "name": "Superman",
+    "age": 25,
+    "male": true
+}
+
+POST
+http://localhost:8080/team-service/v1/player/
+with BODY
+{
+    "name": "Superman",
+    "age": 25,
+    "male": true
+}

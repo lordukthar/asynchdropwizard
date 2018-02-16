@@ -16,8 +16,8 @@ import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
+import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 import io.dropwizard.auth.Auth;
@@ -34,10 +34,11 @@ public class PlayerResource {
     }
 
     @PUT
-    @Path("player/{id}")
+    @Path("player/{playerId}")
     @RolesAllowed("ADMIN")
     @Timed
-    public void update(@Suspended final AsyncResponse asyncResponse, @PathParam("id") Integer id, @NotNull Player people) {
+    public void update(@Suspended final AsyncResponse asyncResponse, @PathParam("playerId") Integer playerId,
+                       @NotNull Player people) {
         asyncResponse.resume(Response.status(HttpStatus.OK_200).entity(people).build());
     }
 
@@ -46,17 +47,21 @@ public class PlayerResource {
     @RolesAllowed("ADMIN")
     @Timed
     public void add(@Suspended final AsyncResponse asyncResponse, @Auth User user,
-    @NotNull PlayerRequest request) {
+                    @Context UriInfo uriInfo, @NotNull PlayerRequest request) {
         Integer playerId = playerDAO.getNextPlayerId();
+        URI locationUri = uriInfo.getRequestUri().resolve(UriBuilder.
+                fromUri("../player/{playerId}").build(playerId));
+
         PlayerEntity entity = Transformer.convertPlayerRequest(playerId, request);
         playerDAO.insert(entity);
-        asyncResponse.resume(Response.status(HttpStatus.OK_200).build());
+        asyncResponse.resume(Response.status(HttpStatus.CREATED_201).location(locationUri).build());
     }
 
     @GET
-    @Path("player/{id}")
+    @Path("player/{playerId}")
     @Timed
-    public void get(@Suspended final AsyncResponse asyncResponse, @PathParam("id") Integer id) throws InterruptedException {
+    public void get(@Suspended final AsyncResponse asyncResponse,
+                    @PathParam("playerId") Integer playerId) throws InterruptedException {
 
         //JUST A TEST TO SHOW ASYNCH
         Player p = new Player( "Superman", 25, true);
@@ -67,10 +72,10 @@ public class PlayerResource {
     }
 
     @DELETE
-    @Path("player/{id}")
+    @Path("player/{playerId}")
     @RolesAllowed("ADMIN")
     @Timed
-    public void delete(@Suspended final AsyncResponse asyncResponse, @PathParam("id") Integer id) {
+    public void delete(@Suspended final AsyncResponse asyncResponse, @PathParam("playerId") Integer playerId) {
         asyncResponse.resume(Response.status(HttpStatus.OK_200).build());
     }
 
