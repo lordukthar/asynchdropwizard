@@ -18,7 +18,7 @@ database:
   password: ${DB.PASSWORD:-sa}
 
   # the JDBC URL
-  url: ${DB.URL:-jdbc:h2:./target/example}
+  url: ${DB.URL:-jdbc:h2:./db/player}
 
 logging:
 

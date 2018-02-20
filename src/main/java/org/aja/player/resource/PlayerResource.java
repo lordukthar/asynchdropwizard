@@ -1,6 +1,7 @@
 package org.aja.player.resource;
 
 import com.codahale.metrics.annotation.Timed;
+import com.google.inject.Inject;
 import org.aja.player.api.Player;
 import org.aja.player.api.PlayerRequest;
 import org.aja.player.common.Transformer;
@@ -27,10 +28,12 @@ import io.dropwizard.auth.Auth;
 public class PlayerResource {
 
     final static private Logger log = LoggerFactory.getLogger(PlayerResource.class);
-    final private PlayerDAO playerDAO;
 
-    public PlayerResource(final PlayerDAO playerDAO) {
-        this.playerDAO = playerDAO;
+    @Inject
+    private PlayerDAO playerDAO;
+
+    public PlayerResource() {
+
     }
 
     @PUT
