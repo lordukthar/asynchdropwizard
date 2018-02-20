@@ -1,11 +1,13 @@
 package org.aja.player.db;
 
-import org.aja.player.api.Player;
 import org.skife.jdbi.v2.sqlobject.Bind;
 import org.skife.jdbi.v2.sqlobject.BindBean;
 import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
+
+import java.util.List;
+import java.util.Optional;
 
 @RegisterMapper(PlayerEntityMapper.class)
 public interface PlayerDAO {
@@ -23,14 +25,16 @@ public interface PlayerDAO {
     void delete(@Bind("playerId") int id);
 
     @SqlQuery("select DISTINCT * from PLAYER where PLAYER_ID = :playerId")
-    <Optional>PlayerEntity findById(@Bind("playerId") int id);
+    Optional<PlayerEntity> findById(@Bind("playerId") int id);
 
 
     @SqlQuery("select * from PLAYER where PLAYER_NAME = :playerName")
-    <List>PlayerEntity findByName(@Bind("playerName") String playerName);
+    List<PlayerEntity> findByName(@Bind("playerName") String playerName);
 
-    @SqlQuery("select player_id_sequence.nextval from dual")
-    Integer getNextPlayerId();
+    @SqlQuery("select * from PLAYER")
+    List<PlayerEntity> getAllPlayers();
+
+
 
 }
 

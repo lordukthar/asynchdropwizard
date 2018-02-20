@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.google.inject.Inject;
 import org.aja.player.api.Player;
 import org.aja.player.api.PlayerRequest;
+import org.aja.player.api.PlayerResponse;
 import org.aja.player.common.Transformer;
 import org.aja.player.auth.User;
 import org.aja.player.db.PlayerDAO;
@@ -21,6 +22,9 @@ import javax.ws.rs.core.*;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 import io.dropwizard.auth.Auth;
 
 @Path("/v1/")
@@ -40,7 +44,7 @@ public class PlayerResource {
     @Path("player/{playerId}")
     @RolesAllowed("ADMIN")
     @Timed
-    public void update(@Suspended final AsyncResponse asyncResponse, @PathParam("playerId") Integer playerId,
+    public void update(@Suspended final AsyncResponse asyncResponse, @PathParam("playerId") String playerId,
                        @NotNull Player people) {
         asyncResponse.resume(Response.status(HttpStatus.OK_200).entity(people).build());
     }
@@ -51,7 +55,7 @@ public class PlayerResource {
     @Timed
     public void add(@Suspended final AsyncResponse asyncResponse, @Auth User user,
                     @Context UriInfo uriInfo, @NotNull PlayerRequest request) {
-        Integer playerId = playerDAO.getNextPlayerId();
+        String playerId = UUID.randomUUID().toString();
         URI locationUri = uriInfo.getRequestUri().resolve(UriBuilder.
                 fromUri("../player/{playerId}").build(playerId));
 
@@ -64,7 +68,7 @@ public class PlayerResource {
     @Path("player/{playerId}")
     @Timed
     public void get(@Suspended final AsyncResponse asyncResponse,
-                    @PathParam("playerId") Integer playerId) throws InterruptedException {
+                    @PathParam("playerId") String playerId) throws InterruptedException {
 
         //JUST A TEST TO SHOW ASYNCH
         Player p = new Player( "Superman", 25, true);
@@ -78,7 +82,7 @@ public class PlayerResource {
     @Path("player/{playerId}")
     @RolesAllowed("ADMIN")
     @Timed
-    public void delete(@Suspended final AsyncResponse asyncResponse, @PathParam("playerId") Integer playerId) {
+    public void delete(@Suspended final AsyncResponse asyncResponse, @PathParam("playerId") String playerId) {
         asyncResponse.resume(Response.status(HttpStatus.OK_200).build());
     }
 
@@ -86,7 +90,8 @@ public class PlayerResource {
     @Path("player")
     @Timed
     public void getAll(@Suspended final AsyncResponse asyncResponse) {
-        final List<Player> peopleList = Arrays.asList(new Player("Jonas", 50, true), new Player( "Sonja", 45, false));
-        asyncResponse.resume(Response.status(HttpStatus.OK_200).entity(peopleList).build());
+        List<PlayerEntity> players = playerDAO.getAllPlayers();
+        List<PlayerResponse> response = players.stream().map(Transformer::convertPlayerEntity).collect(Collectors.toList());
+        asyncResponse.resume(Response.status(HttpStatus.OK_200).entity(response).build());
     }
 }

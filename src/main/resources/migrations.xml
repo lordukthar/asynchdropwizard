@@ -7,7 +7,7 @@
     <changeSet author="jasp" id="1- createTable">
         <createTable tableName="PLAYER">
 
-            <column name="PLAYER_ID" type="number">
+            <column name="PLAYER_ID" type="varchar(56)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="PLAYER_NAME" type="varchar(56)">
@@ -22,11 +22,11 @@
             </createTable>
     </changeSet>
 
-    <changeSet author="jasp" id="2-createSequence">
+    <!--<changeSet author="jasp" id="2-createSequence">
         <createSequence incrementBy="1"
                         sequenceName="player_id_sequence"
                         startValue="1"/>
-    </changeSet>
+    </changeSet>-->
 
 </databaseChangeLog>
 

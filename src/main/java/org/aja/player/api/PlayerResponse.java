@@ -5,16 +5,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class PlayerResponse extends Player {
 
-    private final Integer id;
+    private final String playerId;
 
     @JsonCreator
-    public PlayerResponse(@JsonProperty("id") Integer id, @JsonProperty("name") String name,
+    public PlayerResponse(@JsonProperty("playerId") String playerId, @JsonProperty("name") String name,
                           @JsonProperty("age") Integer age, @JsonProperty("male") Boolean male) {
         super(name, age, male);
-        this.id = id;
+        this.playerId = playerId;
     }
 
-    public Integer getId() {
-        return id;
+
+    public String getPlayerId() {
+        return playerId;
     }
 }
